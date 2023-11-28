@@ -51,46 +51,23 @@ class LensSpider(scrapy.Spider):
     def parse(self, response):
         # Parse lens categories
 
-        lens_categories_first = response.css('li.product-category.product.first')
         lens_categories = response.css('li.product-category.product')
-        lens_categories_last = response.css('li.product-category.product.last')
         
-        for category_1 in lens_categories_first:
-            category_url = category_1.css('a').attrib['href']
-            
-            yield scrapy.Request(category_url, callback=self.parse_brands)
-        
-        for category_2 in lens_categories:
-            category_url = category_2.css('a').attrib['href']
-            
-            yield scrapy.Request(category_url, callback=self.parse_brands)
-
-        for category_3 in lens_categories_last:
-            category_url = category_3.css('a').attrib['href']
+        for category in lens_categories:
+            category_url = category.css('a').attrib['href']
             
             yield scrapy.Request(category_url, callback=self.parse_brands)
 
     def parse_brands(self, response):
         # Parse brands within categories
         
-        lens_brands_first = response.css('li.product-category.product.first')
         lens_brands = response.css('li.product-category.product')
-        lens_brands_last = response.css('li.product-category.product.last')
         
-        for brand_1 in lens_brands_first:
-            category_url = brand_1.css('a').attrib['href']
+        for brand in lens_brands:
+            category_url = brand.css('a').attrib['href']
             
-            yield scrapy.Request(category_url, callback=self.parse_brands)
-        
-        for brand_2 in lens_brands:
-            category_url = brand_2.css('a').attrib['href']
-            
-            yield scrapy.Request(category_url, callback=self.parse_brands)
+            yield scrapy.Request(category_url, callback=self.parse_products)
 
-        for brand_3 in lens_brands_last:
-            category_url = brand_3.css('a').attrib['href']
-            
-            yield scrapy.Request(category_url, callback=self.parse_brands)
 
     def parse_products(self, response):
         # Parse product information within brands
@@ -101,7 +78,7 @@ class LensSpider(scrapy.Spider):
             try:
 
                 yield {
-                        'CATEGORY': 'CAMERAS',
+                        'CATEGORY': 'LENSES',
                         'BRAND': product.css('h2.woocommerce-loop-product__title::text').get().split(' ')[0], 
                         'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
                         'PRICE a day': product.css('bdi::text').get().replace(',00\xa0', '').replace('.',''),
@@ -112,7 +89,7 @@ class LensSpider(scrapy.Spider):
             except:
 
                 yield {
-                    'CATEGORY': 'CAMERAS',
+                    'CATEGORY': 'LENSES',
                     'BRAND': product.css('h2.woocommerce-loop-product__title::text').get().split(' ')[0], 
                     'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
                     'PRICE a day': 'Pedir presupuesto',
