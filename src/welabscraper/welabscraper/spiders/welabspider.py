@@ -82,7 +82,7 @@ class LensSpider(scrapy.Spider):
 
                 yield {
                         'CATEGORY': 'LENSES',
-                        'BRAND': product.css('h1.page-title.bianquita::text').get(),
+                        'BRAND': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-2].split('-')[0],
                         'TYPE': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-3], 
                         'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
                         'PRICE a day': product.css('bdi::text').get().replace(',00\xa0', '').replace('.',''),
@@ -94,7 +94,7 @@ class LensSpider(scrapy.Spider):
 
                 yield {
                         'CATEGORY': 'LENSES',
-                        'BRAND': product.css('h1.page-title.bianquita::text').get(),
+                        'BRAND': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-2].split('-')[0],
                         'TYPE': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-3],
                         'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
                         'PRICE a day': 'Pedir presupuesto',
