@@ -54,6 +54,7 @@ class LensSpider(scrapy.Spider):
         lens_categories = response.css('li.product-category.product')
         
         for category in lens_categories:
+
             category_url = category.css('a').attrib['href']
             
             yield scrapy.Request(category_url, callback=self.parse_brands)
@@ -71,7 +72,9 @@ class LensSpider(scrapy.Spider):
 
     def parse_products(self, response):
         # Parse product information within brands
-        products = response.css('a.woocommerce-LoopProduct-link woocommerce-loop-product__link')
+
+        products = response.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link')
+
         for product in products:
             # Extract product details and yield them or process as needed
             
@@ -79,7 +82,8 @@ class LensSpider(scrapy.Spider):
 
                 yield {
                         'CATEGORY': 'LENSES',
-                        'BRAND': product.css('h2.woocommerce-loop-product__title::text').get().split(' ')[0], 
+                        'BRAND': product.css('h1.page-title.bianquita::text').get(),
+                        'TYPE': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-3], 
                         'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
                         'PRICE a day': product.css('bdi::text').get().replace(',00\xa0', '').replace('.',''),
                         'RENTAL': 'WELAB',
@@ -89,11 +93,12 @@ class LensSpider(scrapy.Spider):
             except:
 
                 yield {
-                    'CATEGORY': 'LENSES',
-                    'BRAND': product.css('h2.woocommerce-loop-product__title::text').get().split(' ')[0], 
-                    'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
-                    'PRICE a day': 'Pedir presupuesto',
-                    'RENTAL': 'WELAB',
-                    'LINK': product.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
-                    }
+                        'CATEGORY': 'LENSES',
+                        'BRAND': product.css('h1.page-title.bianquita::text').get(),
+                        'TYPE': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-3],
+                        'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
+                        'PRICE a day': 'Pedir presupuesto',
+                        'RENTAL': 'WELAB',
+                        'LINK': product.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
+                        }
 
