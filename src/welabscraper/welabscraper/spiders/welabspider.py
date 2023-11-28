@@ -27,6 +27,7 @@ class WelabspiderSpider(scrapy.Spider):
                     'BRAND': cameras.css('h2.woocommerce-loop-product__title::text').get().split(' ')[0], 
                     'NAME': cameras.css('h2.woocommerce-loop-product__title::text').get(),
                     'PRICE a day': cameras.css('bdi::text').get().replace(',00\xa0', '').replace('.',''),
+                    'RENTAL': 'WELAB',
                     'LINK': cameras.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
                     }
             
@@ -37,6 +38,7 @@ class WelabspiderSpider(scrapy.Spider):
                     'BRAND': cameras.css('h2.woocommerce-loop-product__title::text').get().split(' ')[0], 
                     'NAME': cameras.css('h2.woocommerce-loop-product__title::text').get(),
                     'PRICE a day': 'Pedir presupuesto',
+                    'RENTAL': 'WELAB',
                     'LINK': cameras.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
                     }
 
@@ -103,6 +105,7 @@ class LensSpider(scrapy.Spider):
                         'BRAND': product.css('h2.woocommerce-loop-product__title::text').get().split(' ')[0], 
                         'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
                         'PRICE a day': product.css('bdi::text').get().replace(',00\xa0', '').replace('.',''),
+                        'RENTAL': 'WELAB',
                         'LINK': product.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
                         }
             
@@ -113,6 +116,7 @@ class LensSpider(scrapy.Spider):
                     'BRAND': product.css('h2.woocommerce-loop-product__title::text').get().split(' ')[0], 
                     'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
                     'PRICE a day': 'Pedir presupuesto',
+                    'RENTAL': 'WELAB',
                     'LINK': product.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
                     }
 
