@@ -125,7 +125,34 @@ class OvideSpider_5(scrapy.Spider):
                 'LINK': product.css('h3.product-title > a').attrib['href'] 
                 }
         
-        next_page = response.css('a.next.page-numbers').attrib['href']
+        next_page = response.css('a.next.page-numbers::attr(href)').get()
         if next_page is not None:
 
             yield response.follow(next_page, callback = self.parse_products)
+
+
+
+class OvideSpider_6(scrapy.Spider):
+
+    name = 'ovidelightSpider'
+    start_urls = ['https://www.ovide.com/alquiler/video/iluminacion/']
+
+    def parse(self, response):
+
+        for product in response.css('div.product-grid-item'):
+
+            yield {
+                'CATEGORY': 'ILUMINACION',
+                'Subcategory': product.css('h3.product-title > a ::text').get().split(' ')[0],
+                'BRAND': product.css('div.basel-product-brands-links > a ::text').get(), 
+                'TYPE': 'ACCESORIOS',
+                'NAME': product.css('h3.product-title > a ::text').get(),
+                'PRICE a day': 'Pedir presupuesto',
+                'RENTAL': 'OVIDE',
+                'LINK': product.css('h3.product-title > a').attrib['href'] 
+                }
+        
+        next_page = response.css('a.next.page-numbers::attr(href)').get()
+        if next_page is not None:
+
+            yield response.follow(next_page, callback = self.parse)
