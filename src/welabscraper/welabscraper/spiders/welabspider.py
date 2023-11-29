@@ -111,7 +111,7 @@ class AudioSpider(scrapy.Spider):
     start_urls = ["https://welabplus.com/product-category/audio/"]
 
     def parse(self, response):
-        # Parse lens categories
+        # Parse audio categories
 
         audio_categories = response.css('li.product-category.product')
         
@@ -168,12 +168,12 @@ class AudioSpider(scrapy.Spider):
 
 
 
-class LightSpider(scrapy.Spider):
+class LightSpider_1(scrapy.Spider):
     name = "lightSpider_1"
     start_urls = ["https://welabplus.com/product-category/iluminacion/"]
 
     def parse(self, response):
-        # Parse lens categories
+        # Parse lights categories
 
         light_categories = response.css('li.product-category.product')
         
@@ -229,13 +229,12 @@ class LightSpider(scrapy.Spider):
                         }
                 
 
-
-
+class LightSpider_2(scrapy.Spider):
     name = "lightSpider_2"
     start_urls = ["https://welabplus.com/product-category/iluminacion/"]
 
     def parse(self, response):
-        # Parse lens categories
+        # Parse lights categories
 
         light_categories = response.css('li.product-category.product')
         
