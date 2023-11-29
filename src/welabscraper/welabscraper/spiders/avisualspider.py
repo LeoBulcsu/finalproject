@@ -1,11 +1,11 @@
 import scrapy 
 
-# RC SERVICE SCRAP
+# AVISUAL SCRAP
 
 class avisualSpider(scrapy.Spider):
 
-    name = "avisualSpider"
-    start_urls = ["(https://www.avisualpro.es/categoria-producto/opticas)"]
+    name = "avisualcameraSpider"
+    start_urls = ["(https://www.avisualpro.es/categoria-producto/camaras/?location=madrid)"]
 
     def parse(self, response):
         
