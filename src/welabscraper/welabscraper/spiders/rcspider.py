@@ -85,3 +85,50 @@ class RCLensSpider_2(scrapy.Spider):
                     'RENTAL': 'RC SERVICE',
                     'LINK': product.css('article.uk-article').attrib['data-permalink']
                     }
+
+
+
+
+
+class RCcamerasSpider_2(scrapy.Spider):
+
+    name = "rccameraSpider_1"
+    start_urls = ["https://www.rcservice.es/es/alquiler-camaras-peliculas-cine"]
+
+    def parse(self, response):
+        
+        #Parse cameras.
+
+        for cameras in response.css('article.uk-article'):
+
+            yield {
+                'CATEGORY': 'CAMERAS',
+                'TYPE': 'Digital',
+                'BRAND': cameras.css('h1.uk-article-title > a ::text').get().split(' ')[0], 
+                'NAME': cameras.css('h1.uk-article-title > a ::text').get(),
+                'PRICE a day': 'Pedir presupuesto',
+                'RENTAL': 'RC SERVICE',
+                'LINK': cameras.css('article.uk-article').attrib['data-permalink'] 
+                }
+            
+
+class RCcamerasSpider_2(scrapy.Spider):
+
+    name = "rccameraSpider_2"
+    start_urls = ["https://www.rcservice.es/es/camaras-35mm-16mm"]
+
+    def parse(self, response):
+        
+        #Parse cameras.
+
+        for cameras in response.css('article.uk-article'):
+
+            yield {
+                'CATEGORY': 'CAMERAS',
+                'TYPE': 'Analogica',
+                'BRAND': cameras.css('h1.uk-article-title > a ::text').get().split(' ')[0], 
+                'NAME': cameras.css('h1.uk-article-title > a ::text').get(),
+                'PRICE a day': 'Pedir presupuesto',
+                'RENTAL': 'RC SERVICE',
+                'LINK': cameras.css('article.uk-article').attrib['data-permalink'] 
+                }
