@@ -4,7 +4,7 @@ import scrapy
 
 class avisualSpider(scrapy.Spider):
 
-    name = "avisualcameraSpider"
+    name = "avisualaudioSpider"
     start_urls = ["(https://www.avisualpro.es/categoria-producto/camaras/?location=madrid)"]
 
     def parse(self, response):
