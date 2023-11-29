@@ -163,3 +163,65 @@ class AudioSpider(scrapy.Spider):
                         'RENTAL': 'WELAB',
                         'LINK': product.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
                         }
+
+
+
+
+
+class LightSpider(scrapy.Spider):
+    name = "lightSpider"
+    start_urls = ["https://welabplus.com/product-category/iluminacion/"]
+
+    def parse(self, response):
+        # Parse lens categories
+
+        light_categories = response.css('li.product-category.product')
+        
+        for category in light_categories:
+
+            category_url = category.css('a').attrib['href']
+            
+            yield scrapy.Request(category_url, callback=self.parse_brands)
+
+    def parse_brands(self, response):
+        # Parse brands within categories
+        
+        lens_brands = response.css('li.product-category.product')
+        
+        for brand in lens_brands:
+            category_url = brand.css('a').attrib['href']
+            
+            yield scrapy.Request(category_url, callback=self.parse_products)
+
+
+    def parse_products(self, response):
+        # Parse product information within brands
+
+        products = response.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link')
+
+        for product in products:
+            # Extract product details and yield them or process as needed
+            
+            try:
+
+                yield {
+                        'CATEGORY': 'LENSES',
+                        'BRAND': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-2].split('-')[0],
+                        'TYPE': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-3], 
+                        'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
+                        'PRICE a day': product.css('bdi::text').get().replace(',00\xa0', '').replace('.',''),
+                        'RENTAL': 'WELAB',
+                        'LINK': product.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
+                        }
+            
+            except:
+
+                yield {
+                        'CATEGORY': 'LENSES',
+                        'BRAND': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-2].split('-')[0],
+                        'TYPE': product.xpath("/html/head/link[6]").attrib['href'].split('/')[-3],
+                        'NAME': product.css('h2.woocommerce-loop-product__title::text').get(),
+                        'PRICE a day': 'Pedir presupuesto',
+                        'RENTAL': 'WELAB',
+                        'LINK': product.css('a.woocommerce-LoopProduct-link.woocommerce-loop-product__link').attrib['href']
+                        }
