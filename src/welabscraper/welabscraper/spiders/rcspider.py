@@ -90,7 +90,7 @@ class RCLensSpider_2(scrapy.Spider):
 
 
 
-class RCcamerasSpider_2(scrapy.Spider):
+class RCcamerasSpider_1(scrapy.Spider):
 
     name = "rccameraSpider_1"
     start_urls = ["https://www.rcservice.es/es/alquiler-camaras-peliculas-cine"]
