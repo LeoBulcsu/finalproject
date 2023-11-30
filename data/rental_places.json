@@ -1,5 +1,5 @@
 [
-{"rental_place_id":"1", "rental_place_name":"WELAB PROFESSIONAL EQUIPMENT", "address": "C. de Albasanz, 59, 28037, Madrid", "email": "info@welab.es", "phone":"0034 911823355", "website": "https://www.welabplus.com"},
+{"rental_place_id":"1", "rental_place_name":"WELAB", "address": "C. de Albasanz, 59, 28037, Madrid", "email": "info@welab.es", "phone":"0034 911823355", "website": "https://www.welabplus.com"},
 {"rental_place_id":"2", "rental_place_name":"RC SERVICE", "address": "Avda. Prado del Espino, 1, 28660, Boadilla del Monte, Madrid", "email": "info@rcservice.es", "phone":"0034 911855868", "website": "https://www.rcservice.es"},
 {"rental_place_id":"3", "rental_place_name":"OVIDE", "address": "Av. Montes de Oca, 19, Nave 23, 28703, San Sebastián de los Reyes, Madrid", "email": "madrid@ovide.com", "phone":"0034 915670407","website": "https://www.ovide.com"}
 ]
