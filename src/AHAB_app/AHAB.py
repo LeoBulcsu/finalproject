@@ -11,7 +11,7 @@ def main():
     st.title('AHAB - Film Gear Finder')
     
     # Text input for users to enter their list of items
-    items_input = st.text_input('Enter a list of film gear items (comma-separated)', 'Camera, Lens, Lighting')
+    items_input = st.text_input('Enter a list of film gear items (comma-separated)', 'Arri Alexa 35, ArriZeiss 28mm, SkyPanel')
     
     if st.button('Find Rental Place'):
         items_list = [item.strip() for item in items_input.split(',')]
