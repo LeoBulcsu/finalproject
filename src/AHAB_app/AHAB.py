@@ -3,6 +3,7 @@
 import streamlit as st
 import folium
 import json
+from streamlit_folium import st_folium
 
 
 
@@ -38,18 +39,22 @@ with open('../../data/CLEAN/rental_places.json', 'r') as file:
     rental_places = json.load(file)
 
 def display_map():
-    m = folium.Map(location=[40.45456508369153, -3.7239992747135258], zoom_start=11)  # Initial map centered at a location
+    
+    map = folium.Map(location=[40.471981, -3.704809], zoom_start=10.5)  # Initial map centered at a location
 
     # Add markers for rental shop locations
     for place in rental_places:
         lat = place['latitude']
         lon = place['longitude']
         name = place['rental_place_name']
-        folium.Marker([lat, lon], popup=name).add_to(m)
+        address = place['address']
+        phone = place['phone']
+        popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
+        folium.Marker([lat, lon], popup = popup).add_to(map)
 
     # Display the map in Streamlit
     st.title('Rental Shop Locations')
-    st.write(m)  # Display the Folium map in Streamlit
+    st_folium(map, width = 1000)  # Display the Folium map in Streamlit
 
 if __name__ == '__main__':
     display_map()
