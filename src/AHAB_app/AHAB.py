@@ -5,7 +5,41 @@ import folium
 import json
 from streamlit_folium import st_folium
 
+import pandas as pd
+import numpy as np
+from fuzzywuzzy import fuzz, process
 
+
+
+
+#DFs
+
+with open('../../data/CLEAN/audio_df.json', 'r') as audio:
+    audio_products = json.load(audio)
+
+with open('../../data/CLEAN/camera_df.json', 'r') as cameras:
+    camera_products = json.load(cameras)
+
+with open('../../data/CLEAN/lens_df.json', 'r') as lenses:
+    lens_products = json.load(lenses)
+
+with open('../../data/CLEAN/lights_df.json', 'r') as lights:
+    light_products = json.load(lights)
+
+with open('../../data/CLEAN/rental_places.json', 'r') as places:
+    rental_places = json.load(places)
+
+audiodf = pd.DataFrame(audio_products)
+camerasdf = pd.DataFrame(camera_products)
+lensesdf = pd.DataFrame(lens_products)
+lightsdf = pd.DataFrame(light_products)
+rentaldf = pd.DataFrame(rental_places)
+
+
+data_frames = {'audio': audiodf, 'cameras': camerasdf, 'lenses': lensesdf, 'lights': lightsdf}
+
+
+#Streamlit AHAB
 
 def main():
     st.title('AHAB - Film Gear Finder')
@@ -31,6 +65,19 @@ def find_rental_place(items_list):
 if __name__ == '__main__':
     main()
 
+#sidebar
+
+category = st.sidebar.selectbox("Select Category", options=['audio', 'cameras', 'lenses', 'lights'])
+
+if category:
+    df = data_frames[category]
+    selected_brand = st.sidebar.selectbox("Select Brand", options=df['brand'].unique())
+    
+    if selected_brand:
+        filtered_data = df[df['brand'] == selected_brand]
+        st.write(filtered_data)
+    else:
+        st.write(df)
 
 # Locations map
 
