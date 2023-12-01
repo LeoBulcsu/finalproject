@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 from fuzzywuzzy import fuzz, process
 
-
+from PIL import Image
 
 
 #DFs
@@ -41,11 +41,26 @@ data_frames = {'audio': audiodf, 'cameras': camerasdf, 'lenses': lensesdf, 'ligh
 
 #Streamlit AHAB
 
+#image
+
+img = Image.open('images/AHAB_logo.png')
+st.image(img)
+
+state = 'home'
+
 def main():
-    st.title('AHAB - Film Gear Finder')
+    #st.subheader('The film gear finder')
+    st.markdown('Welcome to AHAB the Captain of the vessel that would help you find your gear'
+            '\namong the ocean of rental shops. \n\nDo not hesitate to feed me your gear needs as I will not stop until I find'
+            '\nwhat you are looking for.' 
+            '\n\nOr you can filter the seven seas to find an arrange of gear that might fill'
+            '\nyour needs. AAAARRRRG"')
     
+    st.write("##")
+
     # Text input for users to enter their list of items
-    items_input = st.text_input('Enter a list of film gear items (comma-separated)', 'Arri Alexa 35, ArriZeiss 28mm, SkyPanel')
+    st.subheader('Enter a list of film gear items')
+    items_input = st.text_input('(comma-separated)', 'ex: Arri Alexa 35, ArriZeiss 28mm, SkyPanel')
     
     if st.button('Find Rental Place'):
         items_list = [item.strip() for item in items_input.split(',')]
@@ -62,22 +77,43 @@ def find_rental_place(items_list):
     
     return recommended_place
 
-if __name__ == '__main__':
+if state == 'home':
     main()
 
-#sidebar
 
-category = st.sidebar.selectbox("Select Category", options=['audio', 'cameras', 'lenses', 'lights'])
+# Function to display filter page
+def show_filter_page():
+    st.subheader("Filter Page")
+    # Sidebar selection
+    category = st.sidebar.selectbox("Select Category", options=['audio', 'cameras', 'lenses', 'lights'])
 
-if category:
-    df = data_frames[category]
-    selected_brand = st.sidebar.selectbox("Select Brand", options=df['brand'].unique())
-    
-    if selected_brand:
-        filtered_data = df[df['brand'] == selected_brand]
-        st.write(filtered_data[['name', 'price_a_day', 'link']])
-    else:
-        st.write(df[['name', 'price_a_day', 'link']])
+    if category:
+        df = data_frames[category]
+        selected_brand = st.sidebar.selectbox("Select Brand", options=df['brand'].unique())
+        
+        if selected_brand:
+            filtered_data = df[df['brand'] == selected_brand]
+            st.write(filtered_data[['name', 'price_a_day', 'link']])
+        else:
+            st.write(df[['name', 'price_a_day', 'link']])
+
+st.write("##")
+
+st.text('Or simply navigate through your options by clicking here')
+# Display navigation and filter option
+if state == 'home':
+    filter_option = st.checkbox("Filter Data")
+    if filter_option:
+        state = 'filter'
+
+# Display content based on state
+if state == 'home':
+    st.text('')
+
+else:
+    show_filter_page()
+
+
 
 # Locations map
 
