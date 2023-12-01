@@ -48,7 +48,7 @@ def display_map():
         folium.Marker([lat, lon], popup=name).add_to(m)
 
     # Display the map in Streamlit
-    folium_static(m)
+    st.write(m)
 
 if __name__ == '__main__':
     st.title('Rental Shop Locations')
