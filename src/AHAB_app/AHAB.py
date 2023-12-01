@@ -31,7 +31,7 @@ if __name__ == '__main__':
     main()
 
 
-
+# Locations map
 
 # Load rental_places.json with latitudes and longitudes
 with open('../data/CLEAN/rental_places.json', 'r') as file:
@@ -53,3 +53,4 @@ def display_map():
 if __name__ == '__main__':
     st.title('Rental Shop Locations')
     display_map()
+
