@@ -75,9 +75,9 @@ if category:
     
     if selected_brand:
         filtered_data = df[df['brand'] == selected_brand]
-        st.write(filtered_data)
+        st.write(filtered_data[['name', 'price_a_day', 'link']])
     else:
-        st.write(df['name', 'price_a_day', 'link'])
+        st.write(df[['name', 'price_a_day', 'link']])
 
 # Locations map
 
