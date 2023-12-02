@@ -4,6 +4,7 @@ import streamlit as st
 import folium
 import json
 from streamlit_folium import st_folium
+import base64
 
 from IPython.display import HTML
 from collections import Counter
@@ -83,7 +84,7 @@ class AHABFinder:
 
     def get_rental_place_info(self, rental_place_id):
         
-        return self.rentaldf[self.rentaldf['rental_place_id'] == str(rental_place_id)]#[['rental_place_name', 'address', 'email', 'phone', 'website']]
+        return self.rentaldf[self.rentaldf['rental_place_id'] == str(rental_place_id)]
 
 
     def display_map(self, df):
@@ -95,9 +96,9 @@ class AHABFinder:
             
             lat = df_2.latitude
             lon = df_2.longitude
-            name = df_2.rental_place_name[0]
-            address = df_2.address[0]
-            phone = df_2.phone[0]
+            name = df_2.rental_place_name.iloc[0]
+            address = df_2.address.iloc[0]
+            phone = df_2.phone.iloc[0]
             
             popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
             folium.Marker([lat, lon], popup = popup).add_to(mp)
@@ -128,23 +129,33 @@ def main():
     user_input = st.text_input('(comma-separated)', 'Arri alexa 35, Arri/zeiss masterprime 18mm t1.3, Zoom h6, Nanlite pavotube 15c')
 
     if user_input:
-        input_products = [prod.strip() for prod in user_input.lower().split(',')]
-        
-        found_products_dict = finder.find_products_in_dataframes(input_products)
-        most_common_id = finder.find_most_common_place_id(found_products_dict)
-        rental_place_info = finder.get_rental_place_info(most_common_id)
-        rental_mp = finder.display_map(rental_place_info)
+        try:
+            input_products = [prod.strip() for prod in user_input.lower().split(',')]
+            
+            found_products_dict = finder.find_products_in_dataframes(input_products)
+            most_common_id = finder.find_most_common_place_id(found_products_dict)
+            rental_place_info = finder.get_rental_place_info(most_common_id)
+            rental_mp = finder.display_map(rental_place_info)
 
-        # Display results
-        st.subheader("Found Products in Each Category:")
-        st.write(found_products_dict)
+            # Display results
+            st.subheader("Found Products in Each Category:")
+            st.write(found_products_dict)
 
-        st.subheader("Rental Place Information:")
-        st.write(HTML(rental_place_info[['rental_place_name', 'address', 'email', 'phone', 'website']].to_html(render_links=True, escape=False)))
-        
-        # Display the map in Streamlit
-        st.title('Rental Shop Locations')   
-        st_folium(rental_mp, width = 1000)
+            st.subheader("Rental Place Information:")
+            st.write(HTML(rental_place_info[['rental_place_name', 'address', 'email', 'phone', 'website']].to_html(render_links=True, escape=False)))
+            
+            # Display the map in Streamlit
+            st.title('Rental Shop Locations')   
+            st_folium(rental_mp, width = 1000)
+
+        except:
+            """OH NO! There is NOTHING IN THE SEVEN SEAS for that!!!"""
+            file_ = open("images/stranded.gif", "rb")
+            contents = file_.read()
+            data_url = base64.b64encode(contents).decode("utf-8")
+            file_.close()
+            st.markdown(f'<img src="data:image/gif;base64,{data_url}" alt="cat gif">', unsafe_allow_html=True)
+
         
 
 if state == 'home':
