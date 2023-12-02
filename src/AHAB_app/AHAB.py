@@ -90,9 +90,9 @@ class AHABFinder:
     def display_map(self, df):
             
             df_2 = pd.DataFrame(df)
-            mp = folium.Map(location=[df_2['latitude'], df_2['longitude']], zoom_start=13)  # Initial map centered at a location
+            mp = folium.Map(location=[df_2['latitude'], df_2['longitude']], zoom_start=13)  # Initial map centered at the place location
 
-            # Add marker for rental shop location
+            # Marker for rental shop location
             
             lat = df_2.latitude
             lon = df_2.longitude
@@ -149,7 +149,7 @@ def main():
             st_folium(rental_mp, width = 1000)
 
         except:
-            """OH NO! There is NOTHING IN THE SEVEN SEAS for that!!!"""
+            """AAAARRRGG! There is NOTHING IN THE SEVEN SEAS. Did you input the item correctly?!!! Check your spelling, you LANDLUBBER!"""
             file_ = open("images/stranded.gif", "rb")
             contents = file_.read()
             data_url = base64.b64encode(contents).decode("utf-8")
