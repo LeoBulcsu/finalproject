@@ -85,33 +85,35 @@ class AHABFinder:
         
         return self.rentaldf[self.rentaldf['rental_place_id'] == str(rental_place_id)]#[['rental_place_name', 'address', 'email', 'phone', 'website']]
 
+
     def display_map(self, df):
-    
-        mp = folium.Map(location=[df['latitude'], df['longitude']], zoom_start=10.5)  # Initial map centered at a location
+            
+            df_2 = pd.DataFrame(df)
+            mp = folium.Map(location=[df_2['latitude'], df_2['longitude']], zoom_start=13)  # Initial map centered at a location
 
-        # Add marker for rental shop location
-    
-        lat = df['latitude']
-        lon = df['longitude']
-        name = df['rental_place_name']
-        address = df['address']
-        phone = df['phone']
-        popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
-        folium.Marker([lat, lon], popup = popup).add_to(mp)
+            # Add marker for rental shop location
+            
+            lat = df_2.latitude
+            lon = df_2.longitude
+            name = df_2.rental_place_name[0]
+            address = df_2.address[0]
+            phone = df_2.phone[0]
+            
+            popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
+            folium.Marker([lat, lon], popup = popup).add_to(mp)
 
-        return mp
-
-    def find_rental_place_for_products(self):
+            return mp  
+    # def find_rental_place_for_products(self):
         
-        user_input = input("Enter a list of products separated by commas: ")
-        input_products = [prod.strip() for prod in user_input.lower().split(',')]
+    #     user_input = input("Enter a list of products separated by commas: ")
+    #     input_products = [prod.strip() for prod in user_input.lower().split(',')]
         
-        found_products_dict = self.find_products_in_dataframes(input_products)
-        most_common_id = self.find_most_common_place_id(found_products_dict)
-        rental_place_info = self.get_rental_place_info(most_common_id)
-        rental_mp = self.display_map(rental_place_info)
+    #     found_products_dict = self.find_products_in_dataframes(input_products)
+    #     most_common_id = self.find_most_common_place_id(found_products_dict)
+    #     rental_place_info = self.get_rental_place_info(most_common_id)
+    #     #rental_mp = self.display_map(pd.DataFrame(rental_place_info))
         
-        return found_products_dict, most_common_id, rental_place_info, rental_mp
+    #     return found_products_dict, most_common_id, rental_place_info, #rental_mp
         
 
 #image
@@ -154,12 +156,12 @@ def main():
         st.write(found_products_dict)
 
         st.subheader("Rental Place Information:")
-        st.write(HTML(rental_place_info.to_html(render_links=True, escape=False)))
+        st.write(HTML(rental_place_info[['rental_place_name', 'address', 'email', 'phone', 'website']].to_html(render_links=True, escape=False)))
         
         # Display the map in Streamlit
-        st.title('Rental Shop Locations')
-        st_folium(rental_mp, width = 1000)  # Display the Folium map in Streamlit
-
+        st.title('Rental Shop Locations')   
+        st_folium(rental_mp, width = 1000)
+        
 
 if state == 'home':
     main()
@@ -197,32 +199,4 @@ if state == 'home':
 else:
     show_filter_page()
 
-
-
-# Locations map
-
-# Load rental_places.json with latitudes and longitudes
-# with open('../../data/CLEAN/rental_places.json', 'r') as file:
-#     rental_places = json.load(file)
-
-# def display_map():
-    
-#     map = folium.Map(location=[40.471981, -3.704809], zoom_start=10.5)  # Initial map centered at a location
-
-#     # Add markers for rental shop locations
-#     for place in rental_places:
-#         lat = place['latitude']
-#         lon = place['longitude']
-#         name = place['rental_place_name']
-#         address = place['address']
-#         phone = place['phone']
-#         popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
-#         folium.Marker([lat, lon], popup = popup).add_to(map)
-
-#     # Display the map in Streamlit
-#     st.title('Rental Shop Locations')
-#     st_folium(map, width = 1000)  # Display the Folium map in Streamlit
-
-# if __name__ == '__main__':
-#     display_map()
 
