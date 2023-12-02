@@ -102,19 +102,7 @@ class AHABFinder:
             popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
             folium.Marker([lat, lon], popup = popup).add_to(mp)
 
-            return mp  
-    # def find_rental_place_for_products(self):
-        
-    #     user_input = input("Enter a list of products separated by commas: ")
-    #     input_products = [prod.strip() for prod in user_input.lower().split(',')]
-        
-    #     found_products_dict = self.find_products_in_dataframes(input_products)
-    #     most_common_id = self.find_most_common_place_id(found_products_dict)
-    #     rental_place_info = self.get_rental_place_info(most_common_id)
-    #     #rental_mp = self.display_map(pd.DataFrame(rental_place_info))
-        
-    #     return found_products_dict, most_common_id, rental_place_info, #rental_mp
-        
+            return mp          
 
 #image
 
@@ -132,10 +120,6 @@ def main():
             '\nyour needs. AAAARRRRG"')
     
     st.write("##")
-
-    # Text input for users to enter their list of items
-    # st.subheader('Enter a list of film gear items')
-    # items_input = st.text_input('(comma-separated)', 'ex: Arri Alexa 35, ArriZeiss 28mm, SkyPanel')
     
     # Create AHABFinder instance
     finder = AHABFinder(audiodf, camerasdf, lensesdf, lightsdf, rentaldf)
