@@ -78,7 +78,8 @@ class AHABFinder:
 
     def get_rental_place_info(self, rental_place_id):
         
-        return self.rentaldf[self.rentaldf['rental_place_id'] == str(rental_place_id)]
+        return self.rentaldf[self.rentaldf['rental_place_id'] == str(rental_place_id)][['rental_place_name', 'address', 'email', 'phone', 'website']]
+
 
     def find_rental_place_for_products(self):
         
