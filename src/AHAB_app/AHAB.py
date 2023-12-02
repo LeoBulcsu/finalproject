@@ -5,6 +5,7 @@ import folium
 import json
 from streamlit_folium import st_folium
 
+from IPython.display import HTML
 from collections import Counter
 
 import pandas as pd
@@ -131,7 +132,7 @@ def main():
         st.write(found_products_dict)
 
         st.subheader("Rental Place Information:")
-        st.write(rental_place_info)
+        st.write(HTML(rental_place_info.to_html(render_links=True, escape=False)))
 
 
 if state == 'home':
@@ -156,7 +157,7 @@ def show_filter_page():
 
 st.write("##")
 
-st.text('Or simply navigate through your options by clicking here')
+st.subheader('Or simply navigate through your options by clicking here:')
 # Display navigation and filter option
 if state == 'home':
     filter_option = st.checkbox("Filter Data")
