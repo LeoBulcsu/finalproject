@@ -5,6 +5,8 @@ import folium
 import json
 from streamlit_folium import st_folium
 
+from collections import Counter
+
 import pandas as pd
 import numpy as np
 from fuzzywuzzy import fuzz, process
@@ -41,6 +43,54 @@ data_frames = {'audio': audiodf, 'cameras': camerasdf, 'lenses': lensesdf, 'ligh
 
 #Streamlit AHAB
 
+class AHABFinder:
+    def __init__(self, audiodf, camerasdf, lensesdf, lightsdf, rentaldf):
+        
+        self.audiodf = audiodf
+        self.camerasdf = camerasdf
+        self.lensesdf = lensesdf
+        self.lightsdf = lightsdf
+        self.rentaldf = rentaldf
+
+    def find_products_in_dataframes(self, products):
+        
+        product_dict = {}
+        
+        for category, df in zip(['Audio', 'Cameras', 'Lenses', 'Lights'], [self.audiodf, self.camerasdf, self.lensesdf, self.lightsdf]):
+            
+            found_products = []
+            
+            for product in products:
+                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 95]['rental_place_id'].tolist()
+                found_products.extend(found)
+            
+            product_dict[category] = found_products
+        
+        return product_dict
+
+    def find_most_common_place_id(self, found_products_dict):
+        
+        all_ids = [item for sublist in found_products_dict.values() for item in sublist]
+        count_ids = Counter(all_ids)
+        most_common_id = count_ids.most_common(1)[0][0]
+        
+        return most_common_id
+
+    def get_rental_place_info(self, rental_place_id):
+        
+        return self.rentaldf[self.rentaldf['rental_place_id'] == str(rental_place_id)]
+
+    def find_rental_place_for_products(self):
+        
+        user_input = input("Enter a list of products separated by commas: ")
+        input_products = [prod.strip() for prod in user_input.lower().split(',')]
+        
+        found_products_dict = self.find_products_in_dataframes(input_products)
+        most_common_id = self.find_most_common_place_id(found_products_dict)
+        rental_place_info = self.get_rental_place_info(most_common_id)
+        
+        return found_products_dict, most_common_id, rental_place_info
+
 #image
 
 img = Image.open('images/AHAB_logo.png')
@@ -62,20 +112,29 @@ def main():
     st.subheader('Enter a list of film gear items')
     items_input = st.text_input('(comma-separated)', 'ex: Arri Alexa 35, ArriZeiss 28mm, SkyPanel')
     
-    if st.button('Find Rental Place'):
-        items_list = [item.strip() for item in items_input.split(',')]
-        # Process the list and find the rental place offering most items
-        recommended_place = find_rental_place(items_list)
-        st.write(f"Recommended Rental Place: {recommended_place}")
+    # Create AHABFinder instance
+    finder = AHABFinder(audiodf, camerasdf, lensesdf, lightsdf, rentaldf)
 
-def find_rental_place(items_list):
-    # Logic to find the rental place offering most items from the list
-    # You'll use the items list and your DataFrames to perform this matching
-    
-    # Sample logic (you'll need to adjust this based on your data structure)
-    recommended_place = "Sample Rental Place"
-    
-    return recommended_place
+    # Input products via text input box
+    user_input = st.text_input("Enter a list of products separated by commas")
+
+    if user_input:
+        input_products = [prod.strip() for prod in user_input.lower().split(',')]
+        
+        found_products_dict = finder.find_products_in_dataframes(input_products)
+        most_common_id = finder.find_most_common_place_id(found_products_dict)
+        rental_place_info = finder.get_rental_place_info(most_common_id)
+
+        # Display results
+        st.subheader("Found Products in Each Category:")
+        st.write(found_products_dict)
+
+        st.subheader("Most Common Rental Place ID:")
+        st.write(most_common_id)
+
+        st.subheader("Rental Place Information:")
+        st.write(rental_place_info)
+
 
 if state == 'home':
     main()
