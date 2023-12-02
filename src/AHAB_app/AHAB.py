@@ -54,26 +54,30 @@ class AHABFinder:
         self.rentaldf = rentaldf
 
     def find_products_in_dataframes(self, products):
-        
-        product_dict = {}
+        found_products_dict = {category: [] for category in ['Audio', 'Cameras', 'Lenses', 'Lights']}
         
         for category, df in zip(['Audio', 'Cameras', 'Lenses', 'Lights'], [self.audiodf, self.camerasdf, self.lensesdf, self.lightsdf]):
-            
             found_products = []
             
             for product in products:
-                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 95]['rental_place_id'].tolist()
-                found_products.extend(found)
+                # Filter by similarity and retrieve name and rental_place_id
+                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 95][['name', 'rental_place_id']]
+                found_products.extend(found.to_dict('records'))
             
-            product_dict[category] = found_products
+            found_products_dict[category] = found_products
         
-        return product_dict
+        return found_products_dict
+
+
+    # Function to find the most common rental place ID
 
     def find_most_common_place_id(self, found_products_dict):
-        
-        all_ids = [item for sublist in found_products_dict.values() for item in sublist]
+        all_ids = [item['rental_place_id'] for sublist in found_products_dict.values() for item in sublist]
         count_ids = Counter(all_ids)
-        most_common_id = count_ids.most_common(1)[0][0]
+        
+        most_common_id = None
+        if count_ids:  # Check if count_ids is not empty
+            most_common_id = count_ids.most_common(1)[0][0]
         
         return most_common_id
 
