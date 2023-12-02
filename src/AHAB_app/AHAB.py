@@ -109,14 +109,14 @@ def main():
     st.write("##")
 
     # Text input for users to enter their list of items
-    st.subheader('Enter a list of film gear items')
-    items_input = st.text_input('(comma-separated)', 'ex: Arri Alexa 35, ArriZeiss 28mm, SkyPanel')
+    # st.subheader('Enter a list of film gear items')
+    # items_input = st.text_input('(comma-separated)', 'ex: Arri Alexa 35, ArriZeiss 28mm, SkyPanel')
     
     # Create AHABFinder instance
     finder = AHABFinder(audiodf, camerasdf, lensesdf, lightsdf, rentaldf)
 
-    # Input products via text input box
-    user_input = st.text_input("Enter a list of products separated by commas")
+    st.subheader('Enter a list of film gear items')
+    user_input = st.text_input('(comma-separated)', 'Arri alexa 35, Arri/zeiss masterprime 18mm t1.3, Zoom h6, Nanlite pavotube 15c')
 
     if user_input:
         input_products = [prod.strip() for prod in user_input.lower().split(',')]
@@ -128,9 +128,6 @@ def main():
         # Display results
         st.subheader("Found Products in Each Category:")
         st.write(found_products_dict)
-
-        st.subheader("Most Common Rental Place ID:")
-        st.write(most_common_id)
 
         st.subheader("Rental Place Information:")
         st.write(rental_place_info)
