@@ -83,8 +83,23 @@ class AHABFinder:
 
     def get_rental_place_info(self, rental_place_id):
         
-        return self.rentaldf[self.rentaldf['rental_place_id'] == str(rental_place_id)][['rental_place_name', 'address', 'email', 'phone', 'website']]
+        return self.rentaldf[self.rentaldf['rental_place_id'] == str(rental_place_id)]#[['rental_place_name', 'address', 'email', 'phone', 'website']]
 
+    def display_map(self, df):
+    
+        mp = folium.Map(location=[df['latitude'], df['longitude']], zoom_start=10.5)  # Initial map centered at a location
+
+        # Add marker for rental shop location
+    
+        lat = df['latitude']
+        lon = df['longitude']
+        name = df['rental_place_name']
+        address = df['address']
+        phone = df['phone']
+        popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
+        folium.Marker([lat, lon], popup = popup).add_to(mp)
+
+        return mp
 
     def find_rental_place_for_products(self):
         
@@ -94,8 +109,10 @@ class AHABFinder:
         found_products_dict = self.find_products_in_dataframes(input_products)
         most_common_id = self.find_most_common_place_id(found_products_dict)
         rental_place_info = self.get_rental_place_info(most_common_id)
+        rental_mp = self.display_map(rental_place_info)
         
-        return found_products_dict, most_common_id, rental_place_info
+        return found_products_dict, most_common_id, rental_place_info, rental_mp
+        
 
 #image
 
@@ -130,6 +147,7 @@ def main():
         found_products_dict = finder.find_products_in_dataframes(input_products)
         most_common_id = finder.find_most_common_place_id(found_products_dict)
         rental_place_info = finder.get_rental_place_info(most_common_id)
+        rental_mp = finder.display_map(rental_place_info)
 
         # Display results
         st.subheader("Found Products in Each Category:")
@@ -137,6 +155,10 @@ def main():
 
         st.subheader("Rental Place Information:")
         st.write(HTML(rental_place_info.to_html(render_links=True, escape=False)))
+        
+        # Display the map in Streamlit
+        st.title('Rental Shop Locations')
+        st_folium(rental_mp, width = 1000)  # Display the Folium map in Streamlit
 
 
 if state == 'home':
@@ -180,27 +202,27 @@ else:
 # Locations map
 
 # Load rental_places.json with latitudes and longitudes
-with open('../../data/CLEAN/rental_places.json', 'r') as file:
-    rental_places = json.load(file)
+# with open('../../data/CLEAN/rental_places.json', 'r') as file:
+#     rental_places = json.load(file)
 
-def display_map():
+# def display_map():
     
-    map = folium.Map(location=[40.471981, -3.704809], zoom_start=10.5)  # Initial map centered at a location
+#     map = folium.Map(location=[40.471981, -3.704809], zoom_start=10.5)  # Initial map centered at a location
 
-    # Add markers for rental shop locations
-    for place in rental_places:
-        lat = place['latitude']
-        lon = place['longitude']
-        name = place['rental_place_name']
-        address = place['address']
-        phone = place['phone']
-        popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
-        folium.Marker([lat, lon], popup = popup).add_to(map)
+#     # Add markers for rental shop locations
+#     for place in rental_places:
+#         lat = place['latitude']
+#         lon = place['longitude']
+#         name = place['rental_place_name']
+#         address = place['address']
+#         phone = place['phone']
+#         popup = folium.Popup(f"Company: {name} <br> Address: {address} <br> Phone: {phone}", min_width=300, max_width=300)
+#         folium.Marker([lat, lon], popup = popup).add_to(map)
 
-    # Display the map in Streamlit
-    st.title('Rental Shop Locations')
-    st_folium(map, width = 1000)  # Display the Folium map in Streamlit
+#     # Display the map in Streamlit
+#     st.title('Rental Shop Locations')
+#     st_folium(map, width = 1000)  # Display the Folium map in Streamlit
 
-if __name__ == '__main__':
-    display_map()
+# if __name__ == '__main__':
+#     display_map()
 
