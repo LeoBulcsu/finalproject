@@ -61,7 +61,7 @@ class AHABFinder:
             
             for product in products:
                 # Filter by similarity and retrieve name and rental_place_id
-                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 95][['name', 'rental_place_id']]
+                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 92][['name', 'rental_place_id']]
                 found_products.extend(found.to_dict('records'))
             
             found_products_dict[category] = found_products
@@ -155,11 +155,11 @@ if state == 'home':
 def show_filter_page():
     st.subheader("Filter Page")
     # Sidebar selection
-    category = st.sidebar.selectbox("Select Category", options=['audio', 'cameras', 'lenses', 'lights'])
+    category = st.selectbox("Select Category", options=['audio', 'cameras', 'lenses', 'lights'])
 
     if category:
         df = data_frames[category]
-        selected_brand = st.sidebar.selectbox("Select Brand", options=df['brand'].unique())
+        selected_brand = st.selectbox("Select Brand", options=df['brand'].unique())
         
         if selected_brand:
             filtered_data = df[df['brand'] == selected_brand]
