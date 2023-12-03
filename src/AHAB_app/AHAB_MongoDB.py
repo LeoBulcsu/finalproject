@@ -52,6 +52,12 @@ class AHABFinder:
         self.lightsdf = lightsdf
         self.rentaldf = rentaldf
 
+    def display_found_products(self, found_products_dict):
+        for category, products in found_products_dict.items():
+            if products:
+                df = pd.DataFrame(products)
+                st.write(df['name', 'link'])
+
     def find_products_in_dataframes(self, products):
         found_products_dict = {category: [] for category in ['Audio', 'Cameras', 'Lenses', 'Lights']}
         
@@ -60,10 +66,11 @@ class AHABFinder:
             
             for product in products:
                 # Filter by similarity and retrieve name and rental_place_id
-                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 92][['name', 'rental_place_id']]
+                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 92][['name', 'rental_place_id', 'link']]
                 found_products.extend(found.to_dict('records'))
             
             found_products_dict[category] = found_products
+        
         
         return found_products_dict
 
@@ -137,7 +144,7 @@ def main():
 
             # Display results
             st.subheader("Found Products in Each Category:")
-            st.write(found_products_dict)
+            finder.display_found_products(found_products_dict)
 
             st.subheader("Rental Place Information:")
             st.write(HTML(rental_place_info[['rental_place_name', 'address', 'email', 'phone', 'website']].to_html(render_links=True, escape=False, index=False)))
