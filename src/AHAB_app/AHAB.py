@@ -62,7 +62,7 @@ class AHABFinder:
             
             for product in products:
                 # Filter by similarity and retrieve name and rental_place_id
-                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 92][['name', 'rental_place_id']]
+                found = df[df['name'].apply(lambda x: fuzz.partial_ratio(x, product)) > 92][['name', 'rental_place_id', 'link']]
                 found_products.extend(found.to_dict('records'))
             
             found_products_dict[category] = found_products
