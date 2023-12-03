@@ -56,7 +56,7 @@ class AHABFinder:
         for category, products in found_products_dict.items():
             if products:
                 df = pd.DataFrame(products)
-                st.write(df['name', 'link'])
+                st.write(HTML(df[['name','link']].to_html(render_links=True, escape=False, index=False)))
 
     def find_products_in_dataframes(self, products):
         found_products_dict = {category: [] for category in ['Audio', 'Cameras', 'Lenses', 'Lights']}
@@ -114,7 +114,7 @@ class AHABFinder:
 
 img = Image.open('images/AHAB_logo.png')
 st.image(img)
-
+st.write("##") 
 state = 'home'
 
 def main():
