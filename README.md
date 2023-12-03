@@ -29,6 +29,8 @@ For the final project of the Data Analyst Bootcamp at **IronHack**, I combined m
 
 ## Technologies Used
 
+
+
  - **Python:** The core programming language used for the project.
  - **Jupyter Notebooks:** Utilized for initial data exploration and prototyping.
  - **Scrapy:** Employed for web scraping various rental companies' websites in Madrid.
