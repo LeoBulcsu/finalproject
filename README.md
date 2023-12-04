@@ -2,10 +2,29 @@
 
 # AHAB - Film Gear Search Engine. 
 
-For the final project of the Data Analyst Bootcamp at IronHack, I combined my background in filming with as much as I could of my recently acquired data knowledge. 
+For the final project of the Data Analyst Bootcamp at **IronHack**, I combined my background in filming with as much as I could of my recently acquired data knowledge. 
 
-I used to work at a production company and if you ever wonder what it is that we do there, I must confess it is not as fancy as one could think. Most of the time you are searching on the internet or making phone calls to get what is needed for the production to be achieved. 
+## Description:
 
-One of the most time-consuming tasks an individual can do is finding the gear that the director of photography or the gaffer sends over for you to get at the most convenient rental location. It can take hours surfing on the internet for rental companies, products, or gear that as a production clerk you might not even recognise. And if you thought that you would be working on a project at a time I give you an example of what is going on at the moment in a place like Madrid.
+**AHAB** is an application designed to streamline the process of finding film equipment among various rental shops in Madrid. It caters to production clerks, helping them efficiently locate required gear for audiovisual projects initiated by directors of photography or gaffers.
 
-The region of Madrid hosted more than 950 projects in 2022. More than 89 feature films, 79 TV series and 420 spots were shot in the region. There are an average of 124 production companies in Madrid and 
+## Features:
+
+ - **Data Extraction:** Utilized Scrapy for comprehensive data extraction from multiple rental companies' websites in Madrid.
+ - **Data Transformation:** Processed and cleaned the gathered information to suit the project's requirements.
+ - **Database Management:** Stored the refined data in MongoDB for efficient retrieval and management.
+ - **App Development:** Created an intuitive interface using Streamlit, enabling users to input a list of required products.
+ - **Smart Recommendation:** The app identifies the rental place(s) where most of the listed products are available, optimizing time and cost for production companies.
+
+   
+## Usage:
+
+ - **Input Products:** Enter a comma-separated list of required film gear.
+ - **Get Recommendations:** Receive recommendations on the rental shop(s) where the majority of the listed items are available.
+
+## Demo:
+
+
+
+## Links:
+
