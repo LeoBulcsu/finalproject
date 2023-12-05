@@ -30,6 +30,8 @@ For the final project of the Data Analyst Bootcamp at **IronHack**, I combined m
 ## Technologies Used
 
 ![logos](https://github.com/LeoBulcsu/finalproject/assets/136447924/b54219cc-45e7-49c1-bc15-8df110756ef1)
+<img src="https://raw.githubusercontent.com/YourUserName/YourRepositoryName/BranchName/Path/To/YourImage.png" alt="Logos" width="200">
+
 
  - **Python:** The core programming language used for the project.
  - **Jupyter Notebooks:** Utilized for initial data exploration and prototyping.
