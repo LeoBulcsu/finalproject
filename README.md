@@ -27,5 +27,11 @@ For the final project of the Data Analyst Bootcamp at **IronHack**, I combined m
 ![AHAB_demo](https://github.com/LeoBulcsu/finalproject/assets/136447924/c257b52f-32e1-4400-8f0b-d1f4d17f92ae)
 
 
-## Links:
+## Technologies Used
+
+ - **Python:** The core programming language used for the project.
+ - **Jupyter Notebooks:** Utilized for initial data exploration and prototyping.
+ - **Scrapy:** Employed for web scraping various rental companies' websites in Madrid.
+ - **MongoDB:** Chosen as the database solution for storing and managing the collected data.
+ - **Streamlit:** Used to build an interactive and user-friendly interface for the Film Gear Locator app.
 
