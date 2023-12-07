@@ -24,7 +24,7 @@ For the final project of the Data Analyst Bootcamp at **IronHack**, I combined m
 
 ## Demo:
 
-
+![AHAB_demo](https://github.com/LeoBulcsu/finalproject/assets/136447924/42f5c692-b0e0-4c8d-b3ac-d49cd8ad1aca)
 
 
 ## Technologies Used
