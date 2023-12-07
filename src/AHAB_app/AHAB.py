@@ -165,12 +165,13 @@ if state == 'home':
 # Function to display filter page
 def show_filter_page():
     st.subheader("Filter Page")
-    # Sidebar selection
-    category = st.selectbox("Select Category", options=['audio', 'cameras', 'lenses', 'lights'])
+    # Selection
+    col1, col2 = st.columns(2)
+    category = col1.st.selectbox("Select Category", options=['audio', 'cameras', 'lenses', 'lights'])
 
     if category:
         df = data_frames[category]
-        selected_brand = st.selectbox("Select Brand", options=df['brand'].unique())
+        selected_brand = col2.st.selectbox("Select Brand", options=df['brand'].unique())
         
         if selected_brand:
             filtered_data = df[df['brand'] == selected_brand]

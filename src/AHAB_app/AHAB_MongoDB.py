@@ -170,7 +170,7 @@ if state == 'home':
 # Function to display filter page
 def show_filter_page():
     st.subheader("Filter Page")
-    # Sidebar selection
+    # Selector
     category = st.selectbox("Select Category", options=['audio', 'cameras', 'lenses', 'lights'])
 
     if category:
